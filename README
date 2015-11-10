@@ -1,0 +1,34 @@
+INSTRUCTIONS TO RUN THE SCRIPTS:
+--------------------------------
+
+- To generate inverted index, run 
+		
+		python indexer.py <corpusfilename> <invertedindex_filename>
+    
+    Default corpusfilename -> "tccorpus.txt"
+    Default invertedindex_filename -> "index.out"
+
+- To obtain the list of BM25 ranked documents, run
+
+		python bm25.py <invertedindex_filename> <queries_file> <length_of_top_ranked_doc_list>
+
+		Defaults:
+			
+			- invertedindex_filename -> "index.out"
+			- queries_file -> "queries.txt"
+			- length_of_top_ranked_doc_list -> 100
+
+DESCRIPTION OF THE APPROACH:
+----------------------------
+
+- To calculate bm25 score of each document, following data structures are used
+
+	1. inverted_list: A dictionary which holds all the tokens as the keys and 
+						the list of <docID, tf> pairs
+
+	2. doc_len: A dictionary which holds all the docIDs as the keys and the document 
+					length as its values
+
+	3. results: This is a dictionary which consists of the queries from given queries
+				file as keys and the dictionary consisting of <key -> docID, value -> bm25_score> 
+				as their values

@@ -3,6 +3,7 @@
 import sys
 
 inverted_list = {}
+doc_len = {}
 
 #################################################################################
 
@@ -21,6 +22,7 @@ def tokenize(doc):
 	inv_single_doc = {}
 	doc_lines = doc.split('\n')
 	doc_id = doc_lines[0]
+	doc_len[doc_id] = 0	
 	for line in doc_lines:
 		tokens = line.split(' ')
 		if '' in tokens:
@@ -33,6 +35,7 @@ def tokenize(doc):
    					inv_single_doc[t] = 1
    				else:
    					inv_single_doc[t] += 1
+   				doc_len[doc_id] += 1
 	return doc_id, inv_single_doc
 
 def add_to_inverted_list(info):
@@ -53,7 +56,7 @@ def add_to_inverted_list(info):
 
 if __name__ == '__main__':
 
-	corpus_name = "tcpcorpus.txt"
+	corpus_name = "tccorpus.txt"
 	index_filename = "index.out"
 	if len(sys.argv) > 1:
 		corpus_name = sys.argv[1]
@@ -67,7 +70,10 @@ if __name__ == '__main__':
 	for d in doc_list:
 		add_to_inverted_list(tokenize(d))
 	for k, v in inverted_list.iteritems():
-		index_file.write(k + " -> ")
+		index_file.write(k + "->")
 		for tf in v:
 			index_file.write('(' + tf.docID + ',' + str(tf.tf) +') ')
-		index_file.write('\n')	
+		index_file.write('\n')
+	index_file.write('|')
+	for k,v in doc_len.iteritems():
+		index_file.write(k + ':' + str(v) + '\n')
